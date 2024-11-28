@@ -1,33 +1,38 @@
 import { useState } from "react";
+import Navbar from "./components/Navbar";
+import JokeCard from "./components/JokeCard";
 
 const API = "https://icanhazdadjoke.com/";
 
 const App = () => {
   const [joke, setJoke] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   // API from icanhazdadjoke
-  const handleGetJoke = () => {
-    fetch(API, {
-      headers: {
-        Accept: "application/json",
-      },
-    })
-      .then((res) => res.json())
-      .then((data) => setJoke(data.joke));
+  const handleGetJoke = async () => {
+    try {
+      setLoading(true);
+      const res = await fetch(API, {
+        headers: {
+          Accept: "application/json",
+        },
+      });
+      const joke = await res.json();
+      setLoading(false);
+      setJoke(joke);
+    } catch (error) {
+      console.error("Error fetching joke:", error);
+    }
   };
 
   return (
-    <section className="bg-gradient-to-br from-amber-50 to-orange-200 w-full h-screen flex justify-center items-center">
-      <div className="px-4 py-16 text-center space-y-6 border rounded-lg bg-slate-50 w-[32rem] h-fit">
-        <h1 className="text-2xl font-semibold text-gray-600">Are You a Dad?</h1>
-        <p className="text-4xl font-bold">{joke}</p>
-        <button
-          onClick={handleGetJoke}
-          className="bg-amber-600 hover:bg-amber-700 text-white py-2 px-4 rounded font-medium"
-        >
-          {joke === null ? "Get a Joke" : "Get Another Joke"}
-        </button>
-      </div>
+    <section className="max-w-xl mx-auto bg-gradient-to-br from-amber-50 to-orange-200 w-full h-full rounded-xl flex flex-col items-center justify-center">
+      <Navbar />
+      <JokeCard
+        handleGetJoke={handleGetJoke}
+        joke={joke}
+        loading={loading}
+      />
     </section>
   );
 };
