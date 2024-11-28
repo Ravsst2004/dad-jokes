@@ -8,7 +8,6 @@ const App = () => {
   const [joke, setJoke] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  // API from icanhazdadjoke
   const handleGetJoke = async () => {
     try {
       setLoading(true);
