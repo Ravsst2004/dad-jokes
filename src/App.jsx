@@ -1,5 +1,4 @@
 import { useState } from "react";
-import Navbar from "./components/Navbar";
 import JokeCard from "./components/JokeCard";
 
 const API = "https://icanhazdadjoke.com/";
@@ -26,7 +25,6 @@ const App = () => {
 
   return (
     <section className="max-w-xl mx-auto bg-gradient-to-br from-amber-50 to-orange-200 w-full h-full rounded-xl flex flex-col items-center justify-center">
-      <Navbar />
       <JokeCard
         handleGetJoke={handleGetJoke}
         joke={joke}
