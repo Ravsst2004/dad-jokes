@@ -1,23 +1,59 @@
-/* eslint-disable react/prop-types */
-import Loading from "./Loading";
+import { motion } from "motion/react";
+import { useState } from "react";
+import { BsClipboard2CheckFill } from "react-icons/bs";
+import { IoMdClose } from "react-icons/io";
+import { LuClipboard } from "react-icons/lu";
 
-const JokeCard = ({ handleGetJoke, joke, loading }) => {
+// eslint-disable-next-line react/prop-types
+const JokeCard = ({ joke, setCurrentJoke }) => {
+  const [isCopied, setIsCopied] = useState(false);
+  const handleCopy = () => {
+    if (joke) {
+      navigator.clipboard.writeText(joke);
+      setIsCopied(true);
+      setTimeout(() => {
+        setIsCopied(false);
+      }, 4000);
+    }
+  };
+
   return (
-    <div className="px-4 py-16 text-center space-y-6 border rounded-lg bg-slate-50 w-[32rem] h-fit flex flex-col justify-center">
-      <h1 className="text-2xl font-semibold text-gray-600">Are You a Dad?</h1>
-      {loading ? (
-        <Loading />
-      ) : (
-        <p className="text-4xl font-bold">{joke?.joke}</p>
-      )}
-      {/* {joke && <img src={`https://icanhazdadjoke.com/j/${joke.id}.png`} />} */}
-      <button
-        onClick={handleGetJoke}
-        className="bg-amber-600 hover:bg-amber-700 text-white py-2 px-4 rounded font-medium"
-      >
-        {joke === null ? "Get a Joke" : "Get Another Joke"}
-      </button>
-    </div>
+    <motion.div
+      initial={{ opacity: 0, scale: 0.2 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0.2, transition: { duration: 0.8 } }}
+      className="flex gap-6 mt-6 p-4 border border-amber-600 rounded-lg bg-amber-50"
+    >
+      <p className="text-2xl font-bold">{joke}</p>
+      <div className="space-y-1">
+        <button
+          className="h-fit bg-gray-500 hover:bg-gray-600 text-white p-2 rounded font-medium"
+          onClick={() => setCurrentJoke(null)}
+        >
+          <IoMdClose />
+        </button>
+        <motion.button
+          whileTap={{ scale: 0.9 }}
+          transition={{
+            type: "spring",
+            stiffness: 400,
+            damping: 17,
+          }}
+          onClick={handleCopy}
+          className={`h-fit bg-gray-500 hover:bg-gray-600 text-white p-2 rounded font-medium`}
+        >
+          {isCopied ? (
+            <p>
+              <BsClipboard2CheckFill />
+            </p>
+          ) : (
+            <p>
+              <LuClipboard />
+            </p>
+          )}
+        </motion.button>
+      </div>
+    </motion.div>
   );
 };
 
