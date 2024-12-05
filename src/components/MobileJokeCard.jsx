@@ -4,7 +4,7 @@ import Loading from "./Loading";
 
 const MobileJokeCard = ({ handleGetJoke, joke, loading }) => {
   return (
-    <div className="md:hidden p-4">
+    <div className="lg:hidden p-4">
       <h1 className="text-3xl font-bold text-amber-600 text-center">
         You are a Dad? Get a joke for you now
       </h1>
